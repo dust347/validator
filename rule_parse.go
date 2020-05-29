@@ -63,12 +63,6 @@ func parseRule(str string) (Rule, error) {
 		return nil, fmt.Errorf("%s: rule parse failed", r)
 	}
 
-	/*
-		parseFn, ok := validRuleParseFn[r[0]]
-		if !ok {
-			return nil, fmt.Errorf("%s: have no valid parse fn", r)
-		}
-	*/
 	parseFn := getParseFn(r[0])
 	if parseFn == nil {
 		return nil, fmt.Errorf("%s: have no valid parse fn", r)

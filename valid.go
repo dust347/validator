@@ -1,9 +1,5 @@
 package validator
 
-import (
-	"reflect"
-)
-
 //Check 校验某个值是否合法
 func Check(v interface{}, rules ...Rule) error {
 	var err error
@@ -34,18 +30,25 @@ func CheckValid(v interface{}, strRules ...string) error {
 	return Check(v, rules...)
 }
 
+/*
 //CheckStruct 检查结构体的值是否合法
-func CheckStruct(s interface{}) error {
-	v := reflect.TypeOf(s)
+func CheckStruct(v interface{}) error {
+	return checkValue(reflect.ValueOf(v))
+}
 
-	//不是结构体就直接返回
-	if v.Kind() != reflect.Struct {
-		return nil
+func checkValue(v reflect.Value) error {
+	kind := v.Kind()
+
+	//指针
+	if (kind == reflect.Ptr || kind == reflect.Interface) && !v.IsNil() {
+		return checkValue(v.Elem())
 	}
 
-	for i := 0; i < v.NumField(); i++ {
-
+	//不是结构体
+	if kind != reflect.Struct {
+		return errors.New("not struct")
 	}
 
 	return nil
 }
+*/
